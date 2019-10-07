@@ -65,13 +65,20 @@ class Graph:
                 for next_vert in self.vertices[vertex]:
                     stack.push(next_vert)
 
-    def dft_recursive(self, starting_vertex):
+    def dft_recursive(self, starting_vertex, visited):
         """
         Print each vertex in depth-first order
         beginning from starting_vertex.
         This should be done using recursion.
         """
-        pass
+        visited.add(starting_vertex)
+        print(starting_vertex)
+
+        for vert in self.vertices[starting_vertex]:
+            if vert not in visited:
+                self.dft_recursive(vert, visited)
+
+        return
 
     def bfs(self, starting_vertex, destination_vertex):
         """
@@ -101,7 +108,11 @@ class Graph:
                 visited.add(vertex)
 
                 for next_vert in self.vertices[vertex]:
-                    previous[next_vert] = vertex
+                    # Shortest path is going to be adding it first,
+                    # that's why I make the check. If it exists,
+                    # it exists through a shorter path.
+                    if next_vert not in previous:
+                        previous[next_vert] = vertex
                     queue.enqueue(next_vert)
 
         return shortest_path
@@ -161,7 +172,7 @@ if __name__ == "__main__":
         {1: {2}, 2: {3, 4}, 3: {5}, 4: {6, 7}, 5: {3}, 6: {3}, 7: {1, 6}}
     """
     print(graph.vertices)
-
+    print("DFT")
     """
     Valid DFT paths:
         1, 2, 3, 5, 4, 6, 7
@@ -171,6 +182,7 @@ if __name__ == "__main__":
     """
     graph.dft(1)
     print("*********************************")
+    print("BFT")
     """
     Valid BFT paths:
         1, 2, 3, 4, 5, 6, 7
@@ -188,6 +200,7 @@ if __name__ == "__main__":
     """
     graph.bft(1)
     print("*********************************")
+    print("DFT Recursive")
     """
     Valid DFT recursive paths:
         1, 2, 3, 5, 4, 6, 7
@@ -195,7 +208,7 @@ if __name__ == "__main__":
         1, 2, 4, 7, 6, 3, 5
         1, 2, 4, 6, 3, 5, 7
     """
-    graph.dft_recursive(1)
+    graph.dft_recursive(1, set())
     print("*********************************")
     print("BFS")
     """
