@@ -60,16 +60,13 @@ class SocialGraph:
         # Create friendships
         friendships_created = 0
 
+        # Keep creating relationships until avg is the desired one
         while friendships_created / numUsers != avgFriendships:
             num1 = random.randint(1, 10)
             num2 = random.randint(1, 10)
 
-            print(f"num1: {num1}")
-            print(f"num2: {num2}")
-
             while num1 == num2:
                 num2 = random.randint(1, 10)
-                print(f"new num2: {num2}")
 
             min_num = min(num1, num2)
             max_num = max(num1, num2)
