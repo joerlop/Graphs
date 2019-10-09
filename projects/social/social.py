@@ -1,8 +1,11 @@
+import names
+import random
 
 
 class User:
     def __init__(self, name):
         self.name = name
+
 
 class SocialGraph:
     def __init__(self):
@@ -16,7 +19,9 @@ class SocialGraph:
         """
         if userID == friendID:
             print("WARNING: You cannot be friends with yourself")
-        elif friendID in self.friendships[userID] or userID in self.friendships[friendID]:
+        elif (
+            friendID in self.friendships[userID] or userID in self.friendships[friendID]
+        ):
             print("WARNING: Friendship already exists")
         else:
             self.friendships[userID].add(friendID)
@@ -47,8 +52,32 @@ class SocialGraph:
         # !!!! IMPLEMENT ME
 
         # Add users
+        for i in range(numUsers):
+            name = names.get_first_name()
+            print(name)
+            self.addUser(name)
 
         # Create friendships
+        friendships_created = 0
+
+        while friendships_created / numUsers != avgFriendships:
+            num1 = random.randint(1, 10)
+            num2 = random.randint(1, 10)
+
+            print(f"num1: {num1}")
+            print(f"num2: {num2}")
+
+            while num1 == num2:
+                num2 = random.randint(1, 10)
+                print(f"new num2: {num2}")
+
+            min_num = min(num1, num2)
+            max_num = max(num1, num2)
+
+            # Check if relationship does not exist
+            if max_num not in self.friendships[min_num]:
+                self.addFriendship(min_num, max_num)
+                friendships_created += 2
 
     def getAllSocialPaths(self, userID):
         """
@@ -64,7 +93,7 @@ class SocialGraph:
         return visited
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     sg = SocialGraph()
     sg.populateGraph(10, 2)
     print(sg.friendships)
